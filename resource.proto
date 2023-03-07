@@ -5,14 +5,14 @@ option go_package = "github.com/abulwcse/resource";
 package resource;
 
 service Core {
-  rpc GetProduct (GetProductRequest) returns (GetProductReply) {}
+  rpc GetCustomerProject (GetCustomerProjectRequest) returns (GetCustomerProjectReply) {}
 }
 
 // The request message containing the user's name.
-message GetProductRequest {
+message GetCustomerProjectRequest {
   string customerId = 1;
 }
 
-message GetProductReply {
+message GetCustomerProjectReply {
   string response = 1;
 }

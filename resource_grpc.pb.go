@@ -22,7 +22,7 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoreClient interface {
-	GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductReply, error)
+	GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*GetCustomerProjectReply, error)
 }
 
 type coreClient struct {
@@ -33,9 +33,9 @@ func NewCoreClient(cc grpc.ClientConnInterface) CoreClient {
 	return &coreClient{cc}
 }
 
-func (c *coreClient) GetProduct(ctx context.Context, in *GetProductRequest, opts ...grpc.CallOption) (*GetProductReply, error) {
-	out := new(GetProductReply)
-	err := c.cc.Invoke(ctx, "/resource.Core/GetProduct", in, out, opts...)
+func (c *coreClient) GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*GetCustomerProjectReply, error) {
+	out := new(GetCustomerProjectReply)
+	err := c.cc.Invoke(ctx, "/resource.Core/GetCustomerProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +46,7 @@ func (c *coreClient) GetProduct(ctx context.Context, in *GetProductRequest, opts
 // All implementations must embed UnimplementedCoreServer
 // for forward compatibility
 type CoreServer interface {
-	GetProduct(context.Context, *GetProductRequest) (*GetProductReply, error)
+	GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*GetCustomerProjectReply, error)
 	mustEmbedUnimplementedCoreServer()
 }
 
@@ -54,8 +54,8 @@ type CoreServer interface {
 type UnimplementedCoreServer struct {
 }
 
-func (UnimplementedCoreServer) GetProduct(context.Context, *GetProductRequest) (*GetProductReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetProduct not implemented")
+func (UnimplementedCoreServer) GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*GetCustomerProjectReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCustomerProject not implemented")
 }
 func (UnimplementedCoreServer) mustEmbedUnimplementedCoreServer() {}
 
@@ -70,20 +70,20 @@ func RegisterCoreServer(s grpc.ServiceRegistrar, srv CoreServer) {
 	s.RegisterService(&Core_ServiceDesc, srv)
 }
 
-func _Core_GetProduct_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetProductRequest)
+func _Core_GetCustomerProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetCustomerProjectRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(CoreServer).GetProduct(ctx, in)
+		return srv.(CoreServer).GetCustomerProject(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/resource.Core/GetProduct",
+		FullMethod: "/resource.Core/GetCustomerProject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(CoreServer).GetProduct(ctx, req.(*GetProductRequest))
+		return srv.(CoreServer).GetCustomerProject(ctx, req.(*GetCustomerProjectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -96,8 +96,8 @@ var Core_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetProduct",
-			Handler:    _Core_GetProduct_Handler,
+			MethodName: "GetCustomerProject",
+			Handler:    _Core_GetCustomerProject_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
