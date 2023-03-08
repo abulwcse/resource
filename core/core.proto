@@ -10,7 +10,7 @@ service Core {
 }
 
 // The request message containing the user's name.
-message GetCustomerProjectRequest {
+message GetProjectRequest {
   string projectId = 1;
   string sampleFilterFromDate = 2;
   string sampleFilterToDate = 3;
@@ -18,7 +18,7 @@ message GetCustomerProjectRequest {
 }
 
 // The request message containing the user's name.
-message GetProjectRequest {
+message GetCustomerProjectRequest {
   string customerId = 1;
 }
 
