@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+option go_package = "github.com/abulwcse/resource";
+
+package auth;
+
+service Auth {
+  rpc IsUserAuthenticated (IsUserAuthenticatedRequest) returns (IsUserAuthenticatedReply) {}
+}
+
+// The request message containing the user's name.
+message IsUserAuthenticatedRequest {
+  string token = 1;
+}
+
+message IsUserAuthenticatedReply {
+  bool isValid = 1;
+}

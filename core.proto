@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option go_package = "github.com/abulwcse/resource";
+
+package core;
+
+service Core {
+  rpc GetCustomerProject (GetCustomerProjectRequest) returns (StandardReply) {}
+  rpc GetProject (GetProjectRequest) returns (StandardReply) {}
+}
+
+// The request message containing the user's name.
+message GetCustomerProjectRequest {
+  string projectId = 1;
+  string sampleFilterFromDate = 2;
+  string sampleFilterToDate = 3;
+  string sampleFilterAssay = 4;
+}
+
+// The request message containing the user's name.
+message GetProjectRequest {
+  string customerId = 1;
+}
+
+
+message StandardReply {
+  string response = 1;
+}

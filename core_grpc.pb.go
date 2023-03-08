@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v4.22.0
-// source: resource.proto
+// source: core.proto
 
 package resource
 
@@ -22,7 +22,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoreClient interface {
-	GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*GetCustomerProjectReply, error)
+	GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
 }
 
 type coreClient struct {
@@ -33,9 +34,18 @@ func NewCoreClient(cc grpc.ClientConnInterface) CoreClient {
 	return &coreClient{cc}
 }
 
-func (c *coreClient) GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*GetCustomerProjectReply, error) {
-	out := new(GetCustomerProjectReply)
-	err := c.cc.Invoke(ctx, "/resource.Core/GetCustomerProject", in, out, opts...)
+func (c *coreClient) GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetCustomerProject", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coreClient) GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetProject", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +56,8 @@ func (c *coreClient) GetCustomerProject(ctx context.Context, in *GetCustomerProj
 // All implementations must embed UnimplementedCoreServer
 // for forward compatibility
 type CoreServer interface {
-	GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*GetCustomerProjectReply, error)
+	GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*StandardReply, error)
+	GetProject(context.Context, *GetProjectRequest) (*StandardReply, error)
 	mustEmbedUnimplementedCoreServer()
 }
 
@@ -54,8 +65,11 @@ type CoreServer interface {
 type UnimplementedCoreServer struct {
 }
 
-func (UnimplementedCoreServer) GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*GetCustomerProjectReply, error) {
+func (UnimplementedCoreServer) GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*StandardReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCustomerProject not implemented")
+}
+func (UnimplementedCoreServer) GetProject(context.Context, *GetProjectRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetProject not implemented")
 }
 func (UnimplementedCoreServer) mustEmbedUnimplementedCoreServer() {}
 
@@ -80,10 +94,28 @@ func _Core_GetCustomerProject_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/resource.Core/GetCustomerProject",
+		FullMethod: "/core.Core/GetCustomerProject",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(CoreServer).GetCustomerProject(ctx, req.(*GetCustomerProjectRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Core_GetProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetProjectRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetProject(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetProject",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetProject(ctx, req.(*GetProjectRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -92,14 +124,18 @@ func _Core_GetCustomerProject_Handler(srv interface{}, ctx context.Context, dec 
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Core_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "resource.Core",
+	ServiceName: "core.Core",
 	HandlerType: (*CoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "GetCustomerProject",
 			Handler:    _Core_GetCustomerProject_Handler,
 		},
+		{
+			MethodName: "GetProject",
+			Handler:    _Core_GetProject_Handler,
+		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "resource.proto",
+	Metadata: "core.proto",
 }
