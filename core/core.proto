@@ -5,19 +5,28 @@ option go_package = "github.com/abulwcse/resource/core";
 package core;
 
 service Core {
+  rpc GetCustomers(EmptyParamRequest) returns (StandardReply) {}
   rpc GetCustomerProject (GetCustomerProjectRequest) returns (StandardReply) {}
   rpc GetProject (GetProjectRequest) returns (StandardReply) {}
+  rpc GetChart (GetChartRequest) returns (StandardReply) {}
 }
 
-// The request message containing the user's name.
+message EmptyParamRequest {
+
+}
+
 message GetProjectRequest {
   string projectId = 1;
-  string sampleFilterFromDate = 2;
-  string sampleFilterToDate = 3;
-  string sampleFilterAssay = 4;
 }
 
-// The request message containing the user's name.
+message GetChartRequest {
+  string projectID = 1;
+  string chartID = 2;
+  string habitatAssay = 3;
+  string fromDate = 4;
+  string toDate = 5;
+}
+
 message GetCustomerProjectRequest {
   string customerId = 1;
 }

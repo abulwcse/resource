@@ -22,8 +22,10 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type CoreClient interface {
+	GetCustomers(ctx context.Context, in *EmptyParamRequest, opts ...grpc.CallOption) (*StandardReply, error)
 	GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
 	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetChart(ctx context.Context, in *GetChartRequest, opts ...grpc.CallOption) (*StandardReply, error)
 }
 
 type coreClient struct {
@@ -32,6 +34,15 @@ type coreClient struct {
 
 func NewCoreClient(cc grpc.ClientConnInterface) CoreClient {
 	return &coreClient{cc}
+}
+
+func (c *coreClient) GetCustomers(ctx context.Context, in *EmptyParamRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetCustomers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *coreClient) GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*StandardReply, error) {
@@ -52,12 +63,23 @@ func (c *coreClient) GetProject(ctx context.Context, in *GetProjectRequest, opts
 	return out, nil
 }
 
+func (c *coreClient) GetChart(ctx context.Context, in *GetChartRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetChart", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoreServer is the server API for Core service.
 // All implementations must embed UnimplementedCoreServer
 // for forward compatibility
 type CoreServer interface {
+	GetCustomers(context.Context, *EmptyParamRequest) (*StandardReply, error)
 	GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*StandardReply, error)
 	GetProject(context.Context, *GetProjectRequest) (*StandardReply, error)
+	GetChart(context.Context, *GetChartRequest) (*StandardReply, error)
 	mustEmbedUnimplementedCoreServer()
 }
 
@@ -65,11 +87,17 @@ type CoreServer interface {
 type UnimplementedCoreServer struct {
 }
 
+func (UnimplementedCoreServer) GetCustomers(context.Context, *EmptyParamRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetCustomers not implemented")
+}
 func (UnimplementedCoreServer) GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*StandardReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetCustomerProject not implemented")
 }
 func (UnimplementedCoreServer) GetProject(context.Context, *GetProjectRequest) (*StandardReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetProject not implemented")
+}
+func (UnimplementedCoreServer) GetChart(context.Context, *GetChartRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetChart not implemented")
 }
 func (UnimplementedCoreServer) mustEmbedUnimplementedCoreServer() {}
 
@@ -82,6 +110,24 @@ type UnsafeCoreServer interface {
 
 func RegisterCoreServer(s grpc.ServiceRegistrar, srv CoreServer) {
 	s.RegisterService(&Core_ServiceDesc, srv)
+}
+
+func _Core_GetCustomers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyParamRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetCustomers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetCustomers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetCustomers(ctx, req.(*EmptyParamRequest))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Core_GetCustomerProject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -120,6 +166,24 @@ func _Core_GetProject_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Core_GetChart_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChartRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetChart(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetChart",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetChart(ctx, req.(*GetChartRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Core_ServiceDesc is the grpc.ServiceDesc for Core service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -128,12 +192,20 @@ var Core_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*CoreServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "GetCustomers",
+			Handler:    _Core_GetCustomers_Handler,
+		},
+		{
 			MethodName: "GetCustomerProject",
 			Handler:    _Core_GetCustomerProject_Handler,
 		},
 		{
 			MethodName: "GetProject",
 			Handler:    _Core_GetProject_Handler,
+		},
+		{
+			MethodName: "GetChart",
+			Handler:    _Core_GetChart_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
