@@ -43,7 +43,7 @@ message GetFiltersRequest {
   string projectID = 1;
   string samplesFilterFromDate = 2;
   string samplesFilterToDate = 3;
-  string samplesFilterArea = 4;
+  repeated string samplesFilterArea = 4;
 }
 
 message EmptyParamRequest {
