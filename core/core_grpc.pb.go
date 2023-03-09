@@ -26,6 +26,10 @@ type CoreClient interface {
 	GetCustomerProject(ctx context.Context, in *GetCustomerProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
 	GetProject(ctx context.Context, in *GetProjectRequest, opts ...grpc.CallOption) (*StandardReply, error)
 	GetChart(ctx context.Context, in *GetChartRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetFilters(ctx context.Context, in *GetFiltersRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetMarkers(ctx context.Context, in *GetMarkersRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetTaxonomySummary(ctx context.Context, in *GetTaxonomySummaryRequest, opts ...grpc.CallOption) (*StandardReply, error)
+	GetSamples(ctx context.Context, in *GetSamplesRequest, opts ...grpc.CallOption) (*StandardReply, error)
 }
 
 type coreClient struct {
@@ -72,6 +76,42 @@ func (c *coreClient) GetChart(ctx context.Context, in *GetChartRequest, opts ...
 	return out, nil
 }
 
+func (c *coreClient) GetFilters(ctx context.Context, in *GetFiltersRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetFilters", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coreClient) GetMarkers(ctx context.Context, in *GetMarkersRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetMarkers", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coreClient) GetTaxonomySummary(ctx context.Context, in *GetTaxonomySummaryRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetTaxonomySummary", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *coreClient) GetSamples(ctx context.Context, in *GetSamplesRequest, opts ...grpc.CallOption) (*StandardReply, error) {
+	out := new(StandardReply)
+	err := c.cc.Invoke(ctx, "/core.Core/GetSamples", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // CoreServer is the server API for Core service.
 // All implementations must embed UnimplementedCoreServer
 // for forward compatibility
@@ -80,6 +120,10 @@ type CoreServer interface {
 	GetCustomerProject(context.Context, *GetCustomerProjectRequest) (*StandardReply, error)
 	GetProject(context.Context, *GetProjectRequest) (*StandardReply, error)
 	GetChart(context.Context, *GetChartRequest) (*StandardReply, error)
+	GetFilters(context.Context, *GetFiltersRequest) (*StandardReply, error)
+	GetMarkers(context.Context, *GetMarkersRequest) (*StandardReply, error)
+	GetTaxonomySummary(context.Context, *GetTaxonomySummaryRequest) (*StandardReply, error)
+	GetSamples(context.Context, *GetSamplesRequest) (*StandardReply, error)
 	mustEmbedUnimplementedCoreServer()
 }
 
@@ -98,6 +142,18 @@ func (UnimplementedCoreServer) GetProject(context.Context, *GetProjectRequest) (
 }
 func (UnimplementedCoreServer) GetChart(context.Context, *GetChartRequest) (*StandardReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetChart not implemented")
+}
+func (UnimplementedCoreServer) GetFilters(context.Context, *GetFiltersRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetFilters not implemented")
+}
+func (UnimplementedCoreServer) GetMarkers(context.Context, *GetMarkersRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetMarkers not implemented")
+}
+func (UnimplementedCoreServer) GetTaxonomySummary(context.Context, *GetTaxonomySummaryRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTaxonomySummary not implemented")
+}
+func (UnimplementedCoreServer) GetSamples(context.Context, *GetSamplesRequest) (*StandardReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSamples not implemented")
 }
 func (UnimplementedCoreServer) mustEmbedUnimplementedCoreServer() {}
 
@@ -184,6 +240,78 @@ func _Core_GetChart_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Core_GetFilters_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFiltersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetFilters(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetFilters",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetFilters(ctx, req.(*GetFiltersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Core_GetMarkers_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetMarkersRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetMarkers(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetMarkers",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetMarkers(ctx, req.(*GetMarkersRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Core_GetTaxonomySummary_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTaxonomySummaryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetTaxonomySummary(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetTaxonomySummary",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetTaxonomySummary(ctx, req.(*GetTaxonomySummaryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Core_GetSamples_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSamplesRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(CoreServer).GetSamples(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/core.Core/GetSamples",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(CoreServer).GetSamples(ctx, req.(*GetSamplesRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Core_ServiceDesc is the grpc.ServiceDesc for Core service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +334,22 @@ var Core_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetChart",
 			Handler:    _Core_GetChart_Handler,
+		},
+		{
+			MethodName: "GetFilters",
+			Handler:    _Core_GetFilters_Handler,
+		},
+		{
+			MethodName: "GetMarkers",
+			Handler:    _Core_GetMarkers_Handler,
+		},
+		{
+			MethodName: "GetTaxonomySummary",
+			Handler:    _Core_GetTaxonomySummary_Handler,
+		},
+		{
+			MethodName: "GetSamples",
+			Handler:    _Core_GetSamples_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

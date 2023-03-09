@@ -9,14 +9,45 @@ service Core {
   rpc GetCustomerProject (GetCustomerProjectRequest) returns (StandardReply) {}
   rpc GetProject (GetProjectRequest) returns (StandardReply) {}
   rpc GetChart (GetChartRequest) returns (StandardReply) {}
+  rpc GetFilters (GetFiltersRequest) returns (StandardReply) {}
+  rpc GetMarkers (GetMarkersRequest) returns (StandardReply) {}
+  rpc GetTaxonomySummary (GetTaxonomySummaryRequest) returns (StandardReply) {}
+  rpc GetSamples (GetSamplesRequest) returns (StandardReply) {}
+}
+
+message GetSamplesRequest{
+  string projectID = 1;
+  string samplesFilterFromDate = 2;
+  string samplesFilterToDate = 3;
+  string samplesFilterArea = 4;
+  string samplesFilterHabitatAssay = 5;
+}
+
+message GetTaxonomySummaryRequest {
+  string projectID = 1;
+  string samplesFilterFromDate = 2;
+  string samplesFilterToDate = 3;
+  string samplesFilterArea = 4;
+  string samplesFilterHabitatAssay = 5;
+}
+
+message GetMarkersRequest{
+  string projectID = 1;
+  string sampleID =2 ;
+}
+
+message GetFiltersRequest {
+  string projectID = 1;
+  string samplesFilterFromDate = 2;
+  string samplesFilterToDate = 3;
+  string samplesFilterArea = 4;
 }
 
 message EmptyParamRequest {
-
 }
 
 message GetProjectRequest {
-  string projectId = 1;
+  string projectID = 1;
 }
 
 message GetChartRequest {
@@ -28,7 +59,7 @@ message GetChartRequest {
 }
 
 message GetCustomerProjectRequest {
-  string customerId = 1;
+  string customerID = 1;
 }
 
 
