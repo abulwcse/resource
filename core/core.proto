@@ -23,7 +23,7 @@ message GetSamplesRequest{
   string samplesFilterFromDate = 2;
   string samplesFilterToDate = 3;
   repeated string samplesFilterArea = 4;
-  string samplesFilterHabitatAssay = 5;
+  repeated string samplesFilterHabitatAssay = 5;
 }
 
 message GetTaxonomySummaryRequest {
