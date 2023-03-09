@@ -30,8 +30,8 @@ message GetTaxonomySummaryRequest {
   string projectID = 1;
   string samplesFilterFromDate = 2;
   string samplesFilterToDate = 3;
-  string samplesFilterArea = 4;
-  string samplesFilterHabitatAssay = 5;
+  repeated string samplesFilterArea = 4;
+  repeated string samplesFilterHabitatAssay = 5;
 }
 
 message GetMarkersRequest{
