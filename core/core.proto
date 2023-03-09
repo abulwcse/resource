@@ -14,12 +14,18 @@ service Core {
   rpc GetTaxonomySummary (GetTaxonomySummaryRequest) returns (StandardReply) {}
   rpc GetSamples (GetSamplesRequest) returns (StandardReply) {}
 }
+message Area {
+  string area = 1;
+}
 
 message GetSamplesRequest{
+  message SubMessage {
+    string area = 1;
+  }
   string projectID = 1;
   string samplesFilterFromDate = 2;
   string samplesFilterToDate = 3;
-  string samplesFilterArea = 4;
+  repeated SubMessage samplesFilterArea = 4;
   string samplesFilterHabitatAssay = 5;
 }
 
